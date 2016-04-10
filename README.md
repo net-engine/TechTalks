@@ -15,3 +15,14 @@ Notes:
 
  - Follow server1.js through server7.js and server-final.js for an express API example. server-basic.js is an uncommented and refined version of server-final.js intended to provide a 'quick start' to a new project.
  - socket-server1.js coupled with public/client-server.html is a simple example of setting up a socket to show mouse pointer location for x number of people on the page.
+
+
+## Beer Market (with Volt framework)
+
+Supply and demand beer pricing using the Volt framework. 
+
+Code also at https://github.com/elliotthilaire/beer_market
+
+directory: beer_market
+
+
