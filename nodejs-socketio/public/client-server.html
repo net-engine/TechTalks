@@ -1,0 +1,73 @@
+<html>
+  <head>
+    <script type='text/javascript' src='./jquery.min.js'></script>
+    <script type='text/javascript' src='./socket.io.js'></script>
+  </head>
+  <body>
+    <div>
+      I'm the client!
+      <input id="input" />
+      <canvas id="drawingCanvas"></canvas>
+    </div>
+    <script>
+      // canvas setup.
+      var canvas = document.getElementById('drawingCanvas');
+      var context = canvas.getContext('2d');
+      canvas.width = 2000;
+      canvas.height = 1000;
+      context.font = "30px Arial";
+
+      // users object.
+      var users = {};
+
+      function drawAll() {
+        // hack to clear canvas
+        //canvas.width = canvas.width;
+        // draw a rectangle for each user!
+        $.each(users, function(i, user) {
+          context.strokeRect(user.left, user.top, 100, 50);
+          context.fillText(user.name, user.left + 10, user.top + 25);
+        });
+        setTimeout(drawAll, 16);
+      }
+
+
+
+
+
+
+
+
+      // here we set up a connection to the host. you can pass in an address here, but we don't need to for this
+      var socket = io();
+
+      // socket can receive events the same way the server does!
+      socket.on('where', function(data) {
+        // in certain situations we may redraw here, however given the possibly number of events,
+        // we'll set is up so that drawAll() loops itself.
+        users = data;
+      });
+
+
+
+      
+
+      document.onmousemove = function(e) {
+
+        var name = $('#input').val();
+        // we tell the socket to emit an event to the server
+        if (name) {
+          socket.emit('hello', {
+            name: name,
+            left: e.pageX,
+            top: e.pageY
+          });
+        }
+      };
+
+      // init our loop
+      drawAll();
+
+    </script>
+  </body>
+</html>

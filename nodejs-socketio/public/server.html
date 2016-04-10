@@ -1,0 +1,49 @@
+<html>
+  <head>
+    <script type='text/javascript' src='./jquery.min.js'></script>
+  </head>
+  <body>
+    <canvas id="drawingCanvas"></canvas>
+    <script>
+
+      var canvas = document.getElementById('drawingCanvas');
+      var context = canvas.getContext('2d');
+
+      canvas.width = 2000;
+      canvas.height = 1000;
+
+      function drawAll(users) {
+        // draw a rectangle for each user!
+        $.each(users, function(i, user) {
+          context.fillRect(user.left, user.top, 20, 20);
+        });
+      }
+      
+      function loop() {
+        // lets use the /api/where endpoint to find out where everyones mouses are!
+        $.get({
+          url: ('/api/where'),
+          headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json"
+          }
+        }, function(res) {
+          canvas.width = canvas.width;
+          drawAll(res);
+        });
+        // loop every second.
+        setTimeout(loop, 1000);
+      }
+      loop();
+
+
+    </script>
+
+    <style>
+      #drawingCanvas {
+        width: 100%;
+        height: 100%;
+      }
+    </style>
+  </body>
+</html>

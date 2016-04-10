@@ -1,0 +1,47 @@
+<html>
+  <head>
+    <script type='text/javascript' src='./jquery.min.js'></script>
+  </head>
+  <body>
+    <div>
+      I'm the client!
+      <input id="input" />
+    </div>
+    <script>
+
+      var cursorX = 0,
+          cursorY = 0;
+
+      function loop() {
+        // using jquery for element selection and ajax requests. classic JS dev.
+        var name = $('#input').val();
+        if (name) {
+          // lets use the /api/hello/:user_name endpoint to let the server know where our mouse is!
+          $.post({
+            url: ('/api/hello/' + name),
+            headers: {
+              "Accept": "application/json",
+              "Content-Type": "application/json"
+            },
+            data: JSON.stringify({
+              top: cursorY,
+              left: cursorX
+            })
+          }, function(res) {
+            console.log(res);
+          });
+        }
+        // loop every second.
+        setTimeout(loop, 1000);
+      }
+      loop();
+
+
+      document.onmousemove = function(e){
+        cursorX = e.pageX;
+        cursorY = e.pageY;
+      };
+
+    </script>
+  </body>
+</html>
